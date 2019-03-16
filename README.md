@@ -15,6 +15,8 @@ Technologies:
 
 TODO:
 ====
+- General
+    - Reorganize files (code should belong in android folder)
 - Redesign UI
     - Smaller input fields for gender/weight/height/age/activity
     - Different way to input activity
