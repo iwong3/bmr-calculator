@@ -18,18 +18,27 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         height: '100%'
     },
-    menuHomeButton: {
+    menuIcon: {
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    menuLabel: {
+        color: '#FFFFFF'
+    },
+    menuButton: {
         flex: 1,
-        backgroundColor: '#EAC8A4',
         justifyContent: 'center',
         alignItems: 'center',
         height: '100%'
     },
+    menuHomeButton: {
+        backgroundColor: '#8046F3'
+    },
     menuBMRButton: {
-        flex: 1,
-        backgroundColor: '#F0DFF0',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100%'
+        backgroundColor: '#FA8072'
+    },
+    menuBMIButton: {
+        backgroundColor: '#EDA718'
     }
 });

@@ -7,10 +7,11 @@ export const styles = StyleSheet.create({
     },
     // Title
     titleContainer: {
-        flex: 1,
+        flex: 1.5,
+        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#9DC8D3'
+        backgroundColor: '#FF998D'
     },
     // Form
     form: {
@@ -110,7 +111,8 @@ export const styles = StyleSheet.create({
     },
     bmrResults: {
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        paddingTop: 25
     },
     resetButton: {
         justifyContent: 'center',

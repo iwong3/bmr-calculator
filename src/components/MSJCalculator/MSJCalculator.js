@@ -56,7 +56,8 @@ export default class MSJCalculator extends Component {
     displayHeader = () => {
         return (
             <View style={styles.titleContainer}>
-                <CustomText color='#FFFFFF' fontSize={30} weight='heavy' >Mifflin St. Jeor Calculator</CustomText>
+                <CustomText color='#FFFFFF' fontSize={42}>BMR Calculator</CustomText>
+                <CustomText color='#FFFFFF' fontSize={18}>Mifflin St. Jeor</CustomText>
             </View>
         );
     }
@@ -94,6 +95,7 @@ export default class MSJCalculator extends Component {
                             <TouchableOpacity
                                 key='0'
                                 style={[styles.inputGender, styles.inputGenderActiveMale]}
+                                activeOpacity={0.8}
                                 onPress={() => this.updateForm(field, 'unit', state[field].units[0])} >
                                 <View style={styles.genderIcon}>
                                     <Text style={[styles.genderLabel, styles.genderLabelActive]}>{state[field].units[0]}</Text>
@@ -104,6 +106,7 @@ export default class MSJCalculator extends Component {
                             <TouchableOpacity
                                 key='0'
                                 style={styles.inputGender}
+                                activeOpacity={0.8}
                                 onPress={() => this.updateForm(field, 'unit', state[field].units[0])} >
                                 <View style={styles.genderIcon}>
                                     <Text style={styles.genderLabel}>{state[field].units[0]}</Text>
@@ -115,6 +118,7 @@ export default class MSJCalculator extends Component {
                             <TouchableOpacity
                                 key='1'
                                 style={[styles.inputGender, styles.inputGenderActiveFemale]}
+                                activeOpacity={0.8}
                                 onPress={() => this.updateForm(field, 'unit', state[field].units[1])} >
                                 <View style={styles.genderIcon}>
                                     <Text style={[styles.genderLabel, styles.genderLabelActive]}>{state[field].units[1]}</Text>
@@ -125,6 +129,7 @@ export default class MSJCalculator extends Component {
                             <TouchableOpacity
                                 key='1'
                                 style={styles.inputGender}
+                                activeOpacity={0.8}
                                 onPress={() => this.updateForm(field, 'unit', state[field].units[1])} >
                                 <View style={styles.genderIcon}>
                                     <Text style={styles.genderLabel}>{state[field].units[1]}</Text>
@@ -144,10 +149,13 @@ export default class MSJCalculator extends Component {
                             <View style={styles.inputShared}>
                                 <TextInput
                                     style={styles.sharedTextInput}
+                                    selectionColor='#FA8072'
                                     value={state['height'].value}
+                                    keyboardType='numeric'
                                     onChangeText={(text) => this.updateForm('height', 'value', text)} />
                                 <TouchableOpacity
                                     style={styles.sharedButton}
+                                    activeOpacity={0.8}
                                     onPress={() => {
                                         state.height.unit === 'in'
                                             ? this.updateForm('height', 'unit', state['height'].units[1])
@@ -164,10 +172,13 @@ export default class MSJCalculator extends Component {
                             <View style={styles.inputShared}>
                                 <TextInput
                                     style={styles.sharedTextInput}
+                                    selectionColor='#FA8072'
                                     value={state['weight'].value}
+                                    keyboardType='numeric'
                                     onChangeText={(text) => this.updateForm('weight', 'value', text)} />
                                 <TouchableOpacity
                                     style={styles.sharedButton}
+                                    activeOpacity={0.8}
                                     onPress={() => {
                                         state.weight.unit === 'lbs'
                                             ? this.updateForm('weight', 'unit', state['weight'].units[1])
@@ -191,7 +202,9 @@ export default class MSJCalculator extends Component {
                             <View style={styles.inputShared}>
                                 <TextInput
                                     style={styles.sharedTextInput}
+                                    selectionColor='#FA8072'
                                     value={state['age'].value}
+                                    keyboardType='numeric'
                                     onChangeText={(text) => this.updateForm('age', 'value', text)} />
                                 <View style={styles.sharedTextContainer}>
                                     <Text style={styles.sharedText}>years</Text>
@@ -203,7 +216,9 @@ export default class MSJCalculator extends Component {
                             <View style={styles.inputShared}>
                                 <TextInput
                                     style={styles.sharedTextInput}
+                                    selectionColor='#FA8072'
                                     value={state['activity'].value}
+                                    keyboardType='numeric'
                                     onChangeText={(text) => this.updateForm('activity', 'value', text)} />
                             </View>
                         </View>
@@ -220,6 +235,7 @@ export default class MSJCalculator extends Component {
                     <TouchableOpacity
                         className='ResetButton'
                         style={styles.resetButton}
+                        activeOpacity={0.8}
                         onPress={() => this.resetForm()} >
                         <View>
                             <Text style={styles.sharedButtonText}>Reset</Text>
