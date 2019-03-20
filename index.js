@@ -1,5 +1,5 @@
 import { AppRegistry } from 'react-native';
-import MSJCalculator from './src/components/MSJCalculator/MSJCalculator';
+import Home from './src/components/Home/Home';
 import {name as appName} from './app.json';
 
-AppRegistry.registerComponent(appName, () => MSJCalculator);
+AppRegistry.registerComponent(appName, () => Home);

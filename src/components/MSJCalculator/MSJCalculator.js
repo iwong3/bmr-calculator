@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { KeyboardAvoidingView, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { Icon } from 'react-native-elements'
 
 import CustomText from '../CustomText/CustomText';
+
+import { styles } from './Styles';
+
+import * as utility from '../../utilities/functions';
 
 const initialState = {
     gender: {
@@ -38,89 +43,210 @@ export default class MSJCalculator extends Component {
 
         this.state = Object.assign({}, JSON.parse(JSON.stringify(initialState)));
 
-        this.updateForm = this.updateForm.bind(this);
+        this.displayHeader = this.displayHeader.bind(this);
+        this.displayResults = this.displayResults.bind(this);
+        this.displayForm = this.displayForm.bind(this);
         this.generateInputFields = this.generateInputFields.bind(this);
-        this.getOptionStyle = this.getOptionStyle.bind(this);
+        this.generateResetButton = this.generateResetButton.bind(this);
+        this.updateForm = this.updateForm.bind(this);
+        this.resetForm = this.resetForm.bind(this);
+        this.calculateBMR = this.calculateBMR.bind(this);
     }
 
+    displayHeader = () => {
+        return (
+            <View style={styles.titleContainer}>
+                <CustomText color='#FFFFFF' fontSize={30} weight='heavy' >Mifflin St. Jeor Calculator</CustomText>
+            </View>
+        );
+    }
+
+    displayResults = () => {
+        return (
+            <View className='Results' style={styles.results} >
+                <View className='BMR' style={styles.bmrResults}>
+                    <CustomText color='#FA8072' fontSize={18}>BMR</CustomText>
+                    <CustomText color='#FA8072' fontSize={48}>{ this.calculateBMR() }</CustomText>
+                </View>
+            </View>
+        );
+    }
+
+    displayForm = () => {
+        return (
+            <View className='Form' style={styles.form} >
+                { this.generateInputFields('gender') }
+                { this.generateInputFields('heightandweight') }
+                { this.generateInputFields('ageandactivity') }
+                { this.generateResetButton() }
+            </View>
+        );
+    }
+
+    // Generates the Form Input Fields for the MSJ Calculator
+    generateInputFields = (field) => {
+        const { state } = this;
+        if (field === 'gender') {
+            return (
+                <View id={field} className='FormInput' style={styles.formInput2} >
+                    <View className="inputRow" style={styles.inputRow}>
+                        { state.gender.unit === state.gender.units[0] ? 
+                            <TouchableOpacity
+                                key='0'
+                                style={[styles.inputGender, styles.inputGenderActiveMale]}
+                                onPress={() => this.updateForm(field, 'unit', state[field].units[0])} >
+                                <View style={styles.genderIcon}>
+                                    <Text style={[styles.genderLabel, styles.genderLabelActive]}>{state[field].units[0]}</Text>
+                                    <Icon name='ios-male' type='ionicon' size={72} color='#9BE6FF' />
+                                </View>
+                            </TouchableOpacity>
+                            :
+                            <TouchableOpacity
+                                key='0'
+                                style={styles.inputGender}
+                                onPress={() => this.updateForm(field, 'unit', state[field].units[0])} >
+                                <View style={styles.genderIcon}>
+                                    <Text style={styles.genderLabel}>{state[field].units[0]}</Text>
+                                    <Icon name='ios-male' type='ionicon' size={72} color='#C0C0C0' />
+                                </View>
+                            </TouchableOpacity>
+                        }
+                        { state.gender.unit === state.gender.units[1] ? 
+                            <TouchableOpacity
+                                key='1'
+                                style={[styles.inputGender, styles.inputGenderActiveFemale]}
+                                onPress={() => this.updateForm(field, 'unit', state[field].units[1])} >
+                                <View style={styles.genderIcon}>
+                                    <Text style={[styles.genderLabel, styles.genderLabelActive]}>{state[field].units[1]}</Text>
+                                    <Icon name='ios-female' type='ionicon' size={72} color='#FBA6FF' />
+                                </View>
+                            </TouchableOpacity>
+                            :
+                            <TouchableOpacity
+                                key='1'
+                                style={styles.inputGender}
+                                onPress={() => this.updateForm(field, 'unit', state[field].units[1])} >
+                                <View style={styles.genderIcon}>
+                                    <Text style={styles.genderLabel}>{state[field].units[1]}</Text>
+                                    <Icon name='ios-female' type='ionicon' size={72} color='#C0C0C0' />
+                                </View>
+                            </TouchableOpacity>
+                        }
+                    </View>
+                </View>
+            );
+        } else if (field === 'heightandweight') {
+            return (
+                <View id={field} className='FormInput' style={styles.formInput} >
+                    <View className="inputRow" style={styles.inputRow}>
+                        <View style={{flex: 1, flexDirection: 'column'}}>
+                            <Text style={styles.inputLabel}>Height</Text>
+                            <View style={styles.inputShared}>
+                                <TextInput
+                                    style={styles.sharedTextInput}
+                                    value={state['height'].value}
+                                    onChangeText={(text) => this.updateForm('height', 'value', text)} />
+                                <TouchableOpacity
+                                    style={styles.sharedButton}
+                                    onPress={() => {
+                                        state.height.unit === 'in'
+                                            ? this.updateForm('height', 'unit', state['height'].units[1])
+                                            : this.updateForm('height', 'unit', state['height'].units[0])}
+                                    }>
+                                    <View>
+                                        <Text style={styles.sharedButtonText}>{ state['height'].unit }</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                        <View style={{flex: 1, flexDirection: 'column'}}>
+                            <Text style={styles.inputLabel}>Weight</Text>
+                            <View style={styles.inputShared}>
+                                <TextInput
+                                    style={styles.sharedTextInput}
+                                    value={state['weight'].value}
+                                    onChangeText={(text) => this.updateForm('weight', 'value', text)} />
+                                <TouchableOpacity
+                                    style={styles.sharedButton}
+                                    onPress={() => {
+                                        state.weight.unit === 'lbs'
+                                            ? this.updateForm('weight', 'unit', state['weight'].units[1])
+                                            : this.updateForm('weight', 'unit', state['weight'].units[0])}
+                                    }>
+                                    <View>
+                                        <Text style={styles.sharedButtonText}>{ state['weight'].unit }</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                </View>
+            );
+        } else if (field === 'ageandactivity') {
+            return (
+                <View id={field} className='FormInput' style={styles.formInput} >
+                    <View className="inputRow" style={styles.inputRow}>
+                        <View style={{flex: 1, flexDirection: 'column'}}>
+                            <Text style={styles.inputLabel}>Age</Text>
+                            <View style={styles.inputShared}>
+                                <TextInput
+                                    style={styles.sharedTextInput}
+                                    value={state['age'].value}
+                                    onChangeText={(text) => this.updateForm('age', 'value', text)} />
+                                <View style={styles.sharedTextContainer}>
+                                    <Text style={styles.sharedText}>years</Text>
+                                </View>
+                            </View>
+                        </View>
+                        <View style={{flex: 1, flexDirection: 'column'}}>
+                            <Text style={styles.inputLabel}>Activity Multiplier</Text>
+                            <View style={styles.inputShared}>
+                                <TextInput
+                                    style={styles.sharedTextInput}
+                                    value={state['activity'].value}
+                                    onChangeText={(text) => this.updateForm('activity', 'value', text)} />
+                            </View>
+                        </View>
+                    </View>
+                </View>
+            );
+        }
+    }
+
+    generateResetButton = () => {
+        return (
+            <View id='resetButton' className='FormInput' style={styles.formInput} >
+                <View className="inputRow" style={{justifyContent: 'center', alignItems: 'center'}}>
+                    <TouchableOpacity
+                        className='ResetButton'
+                        style={styles.resetButton}
+                        onPress={() => this.resetForm()} >
+                        <View>
+                            <Text style={styles.sharedButtonText}>Reset</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        )
+    }
+
+    // Two-way binding for state and form
     updateForm = (field, subfield, value) => {
         const stateCopy = Object.assign({}, JSON.parse(JSON.stringify(this.state)));
         stateCopy[field][subfield] = value;
         this.setState(stateCopy);
     }
-
-    generateInputFields = (field) => {
-
-        const { state } = this;
-
-        input = {};
-        if (field === 'gender') {
-            input = (
-                <View className='InputRow' style={styles.inputRow} >
-                    <TouchableOpacity className='Option' style={this.getOptionStyle(field, state[field].units[0])} onPress={() => this.updateForm(field, 'unit', state[field].units[0])} >
-                        <View>
-                            <Text>{state[field].units[0]}</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity className='Option' style={this.getOptionStyle(field, state[field].units[1])} onPress={() => this.updateForm(field, 'unit', state[field].units[1])} >
-                        <View>
-                            <Text>{state[field].units[1]}</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-            );
-        } else if (field === 'weight' || field === 'height') {
-            input = (
-                <View className='InputRow' style={styles.inputRow} >
-                    <View className='Option' style={styles.inputOption2} >
-                        <TextInput style={styles.sharedInput} value={state[field].value} onChangeText={(text) => this.updateForm(field, 'value', text)} />
-                    </View>
-                    <TouchableOpacity className='Option' style={this.getOptionStyle(field, state[field].units[0])} onPress={() => this.updateForm(field, 'unit', state[field].units[0])} >
-                        <View>
-                            <Text>{state[field].units[0]}</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity className='Option' style={this.getOptionStyle(field, state[field].units[1])} onPress={() => this.updateForm(field, 'unit', state[field].units[1])} >
-                        <View>
-                            <Text>{state[field].units[1]}</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-            );
-        } else if (field === 'age' || field === 'activity') {
-            input = (
-                <View className='InputRow' style={styles.inputRow} >
-                    <View className='Option' style={styles.inputOption} >
-                        <TextInput style={styles.sharedInput} value={state[field].value} onChangeText={(text) => this.updateForm(field, 'value', text)} />
-                    </View>
-                </View>
-            );
-        }
-
-        return (
-            <View id={field} className='FormInput' style={styles.formInput} >
-                <View className='InputLabel' style={styles.inputLabel} >
-                    <CustomText color='#000000' fontSize={18} weight='light'>{state[field].label}</CustomText>
-                </View>
-                { input }
-            </View>
-        );
+    
+    resetForm = () => {
+        this.setState(initialState);
     }
 
-    getOptionStyle = (field, unit) => {
-        const { state } = this;
-        if (state[field].unit === unit) {
-            return unit === state[field].units[0] ? [styles.optionLeft, styles.activeOption] : [styles.optionRight, styles.activeOption]
-        }
-        return unit === state[field].units[0] ? styles.optionLeft : styles.optionRight
-    }
-
+    // Calculates BMR using the MSJ Equation
     calculateBMR = () => {
         const { state } = this;
         if (state.weight.value === '' || state.height.value === '' || state.age.value === '') {
-            return 'N/A';
+            return '0';
         }
-
         // Convert to metric
         let weight = parseFloat(state.weight.value);
         let height = parseFloat(state.height.value);
@@ -132,154 +258,24 @@ export default class MSJCalculator extends Component {
         if (state.height.unit === 'in') {
             height *= 2.54;
         }
-
         // Calculate BMR
         if (state.gender.unit === 'Male') {
-            return ((10 * weight) + (6.25 * height) - (5 * age) + 5) * activity
+            return utility.roundDecimals(((10 * weight) + (6.25 * height) - (5 * age) + 5) * activity, 2)
         }
         if (state.gender.unit === 'Female') {
-            return ((10 * weight) + (6.25 * height) - (5 * age) - 161) * activity
+            return utility.roundDecimals(((10 * weight) + (6.25 * height) - (5 * age) - 161) * activity, 2)
         }
-        return 'N/A';   
-    }
-
-    resetForm = () => {
-        this.setState(initialState);
-    }
-
-    displayHeader = () => {
-        return (
-            <View style={styles.titleContainer}>
-                <CustomText color='#FFFFFF' fontSize={20} weight='heavy' uppercase={true} >Mifflin St. Jeor Calculator</CustomText>
-            </View>
-        );
-    }
-
-    displayForm = () => {
-        return (
-            <View className='Form' style={styles.form} >
-                { this.generateInputFields('gender') }
-                { this.generateInputFields('weight') }
-                { this.generateInputFields('height') }
-                { this.generateInputFields('age') }
-                { this.generateInputFields('activity') }
-            </View>
-        );
-    }
-
-    displayResults = () => {
-        return (
-            <View className='Results' style={styles.results} >
-                <View className='BMR' style={styles.bmrResults}>
-                    <CustomText color='#000000'>BMR: { this.calculateBMR() }</CustomText>
-                </View>
-                <TouchableOpacity className='ResetButton' style={styles.resetButton} onPress={() => this.resetForm()} >
-                    <View>
-                        <CustomText color='#000000'>Reset</CustomText>
-                    </View>
-                </TouchableOpacity>
-            </View>
-        );
+        return '0';   
     }
 
     render() {
         return (
-            <View style={styles.container}>
+            <KeyboardAvoidingView style={styles.container}>
                 { this.displayHeader() }
-                { this.displayForm() }
                 { this.displayResults() }
-            </View>
+                { this.displayForm() }
+            </KeyboardAvoidingView>
         );
     }
 
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        backgroundColor: '#FFFFFF'
-    },
-    // Title
-    titleContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#9DC8D3'
-    },
-    // Form
-    form: {
-        flex: 7,
-        margin: 25
-    },
-    formInput: {
-        flex: 1
-    },
-    inputLabel: {
-        marginBottom: 5
-    },
-    input: {
-        borderColor: '#D1CED0',
-        borderWidth: 1,
-        borderRadius: 10,
-        fontSize: 14,
-        padding: 10
-    },
-    sharedInput: {
-        borderColor: '#D1CED0',
-        borderWidth: 1,
-        borderRadius: 10,
-        fontSize: 14,
-        padding: 10,
-        marginRight: 10
-    },
-    inputRow: {
-        flexDirection: 'row'
-    },
-    inputOption: {
-        flex: 1
-    },
-    inputOption2: {
-        flex: 7
-    },
-    optionLeft: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderWidth: 1,
-        borderColor: '#999999',
-        borderTopLeftRadius: 10,
-        borderBottomLeftRadius: 10,
-        padding: 10
-    },
-    optionRight: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderWidth: 1,
-        borderColor: '#999999',
-        borderTopRightRadius: 10,
-        borderBottomRightRadius: 10,
-        padding: 10
-    },
-    activeOption: {
-        backgroundColor: '#9DC8D3'
-    },
-    // Results
-    results: {
-        flex: 1,
-        flexDirection: 'row'
-    },
-    bmrResults: {
-        flex: 2,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#E8B0BD'
-    },
-    resetButton: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#FFF1E3'
-    }
-});
