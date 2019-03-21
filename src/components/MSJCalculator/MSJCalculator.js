@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { KeyboardAvoidingView, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { Text, View, TextInput, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements'
 
 import CustomText from '../CustomText/CustomText';
@@ -51,13 +51,13 @@ export default class MSJCalculator extends Component {
         this.updateForm = this.updateForm.bind(this);
         this.resetForm = this.resetForm.bind(this);
         this.calculateBMR = this.calculateBMR.bind(this);
+        this.calculateBMI = this.calculateBMI.bind(this);
     }
 
     displayHeader = () => {
         return (
             <View style={styles.titleContainer}>
-                <CustomText color='#FFFFFF' fontSize={42}>BMR Calculator</CustomText>
-                <CustomText color='#FFFFFF' fontSize={18}>Mifflin St. Jeor</CustomText>
+                <CustomText color='#FFFFFF' fontSize={36}>BMR/BMI Calculator</CustomText>
             </View>
         );
     }
@@ -65,9 +65,15 @@ export default class MSJCalculator extends Component {
     displayResults = () => {
         return (
             <View className='Results' style={styles.results} >
+                <View style={styles.resultsWrapper}>
                 <View className='BMR' style={styles.bmrResults}>
                     <CustomText color='#FA8072' fontSize={18}>BMR</CustomText>
                     <CustomText color='#FA8072' fontSize={48}>{ this.calculateBMR() }</CustomText>
+                </View>
+                <View className='BMI' style={styles.bmrResults}>
+                    <CustomText color='#FA8072' fontSize={18}>BMI</CustomText>
+                    <CustomText color='#FA8072' fontSize={48}>{ this.calculateBMI() }</CustomText>
+                </View>
                 </View>
             </View>
         );
@@ -284,13 +290,31 @@ export default class MSJCalculator extends Component {
         return '0';   
     }
 
+    calculateBMI = () => {
+        const { state } = this;
+        if (state.weight.value === '' || state.height.value === '') {
+            return '0';
+        }
+        // Convert to metric
+        let weight = parseFloat(state.weight.value);
+        let height = parseFloat(state.height.value);
+        if (state.weight.unit === 'lbs') {
+            weight /= 2.2;
+        }
+        if (state.height.unit === 'in') {
+            height *= 2.54;
+        }
+        // Calculate BMI
+        return utility.roundDecimals(weight / ((height / 100.0) * (height / 100.0)), 2);
+    }
+
     render() {
         return (
-            <KeyboardAvoidingView style={styles.container}>
+            <View style={styles.container}>
                 { this.displayHeader() }
                 { this.displayResults() }
                 { this.displayForm() }
-            </KeyboardAvoidingView>
+            </View>
         );
     }
 

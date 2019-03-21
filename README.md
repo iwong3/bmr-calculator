@@ -17,10 +17,6 @@ TODO:
 ====
 - General
     - Reorganize files (code should belong in android folder)
-- Redesign UI
-    - Smaller input fields for gender/weight/height/age/activity
-    - Different way to input activity
-    - Show BMR and reset button on the form
 - Tools Menu
     - Create other tools
         - BMR
@@ -32,3 +28,12 @@ TODO:
     - Transition from BMR calc to charts (show how current person relates to others)
     - Add info section (equation for calculator, criteria for activity multiplier, etc.)
     - Functionality support for kids
+    - Pressing the unit when there's a value inputted should convert
+    - Show BMI too?
+
+DONE:
+====
+- Redesign UI
+    - Smaller input fields for gender/weight/height/age/activity
+    - Different way to input activity
+    - Show BMR and reset button on the form

@@ -1,16 +1,12 @@
 import { StyleSheet } from 'react-native'
 
 export const styles = StyleSheet.create({
-    home: {
-        flex: 1
-    },
     activeAppContainer: {
-        flex: 14,
-        justifyContent: 'center',
+        height: '92.5%',
         backgroundColor: '#FFFFFF'
     },
     menuContainer: {
-        flex: 1
+        height: '7.5%'
     },
     menuBar: {
         flexDirection: 'row',

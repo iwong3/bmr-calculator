@@ -14,13 +14,17 @@ export default class Home extends Component {
         this.state = {
             activeApp: 'home'
         };
+
+        this.displayActiveApp = this.displayActiveApp.bind(this);
+        this.displayMenu = this.displayMenu.bind(this);
+        this.selectActiveApp = this.selectActiveApp.bind(this);
     }
 
     displayActiveApp = () => {
         const { state } = this;
         if (state.activeApp === 'home') {
             return (
-                <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                <View>
                     <Text>COOL APP</Text>
                 </View>
             );
@@ -50,18 +54,8 @@ export default class Home extends Component {
                     activeOpacity={0.8}
                     onPress={() => this.selectActiveApp('bmr')}>
                     <View style={styles.menuIcon}>
-                        <Icon name='ios-restaurant' type='ionicon' size={32} color='#FFFFFF' />
-                        <Text style={styles.menuLabel}>BMR</Text>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    className='MenuBMI'
-                    style={[styles.menuButton, styles.menuBMIButton]}
-                    activeOpacity={0.8}
-                    onPress={() => this.selectActiveApp('bmr')}>
-                    <View style={styles.menuIcon}>
-                        <Icon name='ios-walk' type='ionicon' size={32} color='#FFFFFF' />
-                        <Text style={styles.menuLabel}>BMI</Text>
+                        <Icon name='ios-calculator' type='ionicon' size={32} color='#FFFFFF' />
+                        <Text style={styles.menuLabel}>BMR/BMI</Text>
                     </View>
                 </TouchableOpacity>
             </View>

@@ -2,28 +2,30 @@ import { StyleSheet } from 'react-native'
 
 export const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        // flex: 1,
         backgroundColor: '#FFFFFF'
     },
     // Title
     titleContainer: {
-        flex: 1.5,
-        flexDirection: 'column',
+        height: '10%',
+        // flex: 1,
+        // flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#FF998D'
     },
     // Form
     form: {
-        flex: 5,
-        margin: 25
+        height: '82.5%',
+        // flex: 5,
+        margin: 10
     },
     formInput: {
-        height: 100,
-        marginTop: 20
+        height: '12.5%',
+        marginTop: 10
     },
     formInput2: {
-        height: 200
+        height: '17.5%'
     },
     inputRow: {
         flex: 1,
@@ -42,8 +44,8 @@ export const styles = StyleSheet.create({
         borderRadius: 20,
         borderColor: '#FA8072',
         paddingLeft: 15,
-        marginLeft: 15,
-        marginRight: 15
+        marginLeft: 10,
+        marginRight: 10
     },
     sharedTextInput: {
         fontSize: 32,
@@ -57,11 +59,11 @@ export const styles = StyleSheet.create({
         borderRadius: 20,
         borderColor: '#FA8072',
         backgroundColor: '#FA8072',
-        height: 45,
-        width: 60
+        height: 35,
+        width: '30%'
     },
     sharedButtonText: {
-        fontSize: 24,
+        fontSize: 18,
         color: '#FFFFFF'
     },
     sharedTextContainer: {
@@ -71,7 +73,7 @@ export const styles = StyleSheet.create({
         width: 60
     },
     sharedText: {
-        fontSize: 24,
+        fontSize: 18,
         color: '#696969'
     },
     // Form - Gender
@@ -82,7 +84,7 @@ export const styles = StyleSheet.create({
         borderWidth: 2,
         borderRadius: 20,
         borderColor: '#C0C0C0',
-        margin: 15
+        margin: 10
     },
     inputGenderActiveMale: {
         borderColor: '#9BE6FF'
@@ -105,11 +107,18 @@ export const styles = StyleSheet.create({
     },
     // Results
     results: {
-        flex: 2,
+        // flex: 2,
+        // justifyContent: 'center',
+        // alignItems: 'center',
+        height: '20%'
+    },
+    resultsWrapper: {
+        flexDirection: 'row',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     bmrResults: {
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         paddingTop: 25
